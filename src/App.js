@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import DetectableOverflow from 'react-detectable-overflow';
 import ReactResizeDetector from 'react-resize-detector';
 import './App.css';
@@ -9,6 +9,7 @@ const longText = "Helloooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 function App() {
   const [overflowed, setOverflowed] = useState(false);
   const [text, setText] = useState(shortText);
+  const elemRef = useRef(null);
 
   const handleOverflow = isOverflowed => {
     if (isOverflowed) setOverflowed(true);
@@ -27,9 +28,9 @@ function App() {
         <button className="ml-2" onClick={() => handleClick(longText)}>Change to long text</button>
       </div>
       <div className="text-wrapper mt-2">
-        <ReactResizeDetector handleWidth handleHeight={false} onResize={() => setOverflowed(false)}>
+        <ReactResizeDetector targetRef={elemRef} handleWidth handleHeight={false} onResize={() => setOverflowed(false)}>
           <DetectableOverflow onChange={handleOverflow}>
-            <span>{text}</span>
+            <span ref={elemRef}>{text}</span>
           </DetectableOverflow>
         </ReactResizeDetector>
       </div>
